@@ -18,7 +18,7 @@ def get_character_movies_from_api(character_name)
   char_info = nil
   ten_char = JSON.parse(RestClient.get('http://www.swapi.co/api/people/'))
   while !char_info
-    char_info = ten_char['results'].each.find {|hash| hash['name'] == character_name} # nil or char hash
+    char_info = ten_char['results'].each.find {|hash| hash['name'].downcase == character_name} # nil or char hash
     if ten_char['next']
       ten_char = JSON.parse(RestClient.get(ten_char['next']))
     else
@@ -66,7 +66,7 @@ end
 def print_movies(films)
   puts "*"*25
   films.each_with_index do |hash, index|
-    puts "#{index+1}) #{hash["title"]}"
+    puts "#{index+1}) #{hash["title"]}, directed by #{hash['director']}, released in #{hash['release_date'][0,4]}"
   end
 
 end
